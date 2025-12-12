@@ -402,7 +402,7 @@ const AboutTab = () => (
     <div className="glass-panel p-4 rounded-3 mt-4">
       <h6 className="text-white mb-3"><i className="bi bi-star-fill text-warning me-2"></i>Features</h6>
       <ul className="list-unstyled text-start text-white-50 small mb-0">
-        <li className="mb-2">✓ 110+ South Asian foods</li>
+        <li className="mb-2">✓ 400+ South Asian foods</li>
         <li className="mb-2">✓ Search & filter by category</li>
         <li className="mb-2">✓ Favorites system</li>
         <li className="mb-2">✓ Daily calorie tracking</li>
