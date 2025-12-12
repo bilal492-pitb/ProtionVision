@@ -55,11 +55,11 @@ const CameraOverlay: React.FC<CameraOverlayProps> = ({ visualObject, onClose, on
         );
       case 'thumb':
         return (
-           <svg viewBox="0 0 100 140" className="w-full h-full" style={{ overflow: 'visible' }}>
-             <path d="M30 130 L30 60 Q30 20 50 20 Q70 20 70 60 L70 130" {...commonProps} />
-             <path d="M35 50 Q50 55 65 50" {...commonProps} strokeWidth="1" /> {/* Knuckle */}
-             <path d="M40 35 Q50 30 60 35" {...commonProps} strokeWidth="1" opacity="0.6" /> {/* Nail base */}
-           </svg>
+          <svg viewBox="0 0 100 140" className="w-full h-full" style={{ overflow: 'visible' }}>
+            <path d="M30 130 L30 60 Q30 20 50 20 Q70 20 70 60 L70 130" {...commonProps} />
+            <path d="M35 50 Q50 55 65 50" {...commonProps} strokeWidth="1" /> {/* Knuckle */}
+            <path d="M40 35 Q50 30 60 35" {...commonProps} strokeWidth="1" opacity="0.6" /> {/* Nail base */}
+          </svg>
         );
       case 'computer-mouse':
         return (
@@ -71,17 +71,17 @@ const CameraOverlay: React.FC<CameraOverlayProps> = ({ visualObject, onClose, on
         );
       case 'checkbook':
         return (
-           <svg viewBox="0 0 160 80" className="w-full h-full" style={{ overflow: 'visible' }}>
-             <rect x="5" y="5" width="150" height="70" rx="2" {...commonProps} />
-             <line x1="15" y1="25" x2="100" y2="25" {...commonProps} strokeWidth="1" />
-             <line x1="15" y1="45" x2="145" y2="45" {...commonProps} strokeWidth="1" />
-           </svg>
+          <svg viewBox="0 0 160 80" className="w-full h-full" style={{ overflow: 'visible' }}>
+            <rect x="5" y="5" width="150" height="70" rx="2" {...commonProps} />
+            <line x1="15" y1="25" x2="100" y2="25" {...commonProps} strokeWidth="1" />
+            <line x1="15" y1="45" x2="145" y2="45" {...commonProps} strokeWidth="1" />
+          </svg>
         );
       case 'dice':
         return (
           <svg viewBox="0 0 100 100" className="w-full h-full" style={{ overflow: 'visible' }}>
             <rect x="25" y="25" width="50" height="50" rx="4" {...commonProps} />
-            <rect x="35" y="10" width="50" height="50" rx="4" {...commonProps} opacity="0.6" strokeDasharray="4 2"/>
+            <rect x="35" y="10" width="50" height="50" rx="4" {...commonProps} opacity="0.6" strokeDasharray="4 2" />
           </svg>
         );
       default: // Generic Square fallback
@@ -127,17 +127,17 @@ const CameraOverlay: React.FC<CameraOverlayProps> = ({ visualObject, onClose, on
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current;
       const canvas = canvasRef.current;
-      
+
       // Match canvas size to video actual size
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      
+
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         // In a real app we might capture the image dataURL here, but for this prompt
         // we just trigger the success flow and log prompt.
-        
+
         setShowSuccess(true);
         // Wait 1.5s for success animation then trigger log prompt in parent
         setTimeout(() => {
@@ -149,7 +149,7 @@ const CameraOverlay: React.FC<CameraOverlayProps> = ({ visualObject, onClose, on
 
   if (error) {
     return (
-      <div className="fixed inset-0 z-50 bg-slate-900 flex flex-col items-center justify-center p-4 text-center">
+      <div className="position-fixed top-0 start-0 w-100 h-100 bg-dark d-flex flex-column align-items-center justify-content-center p-4 text-center" style={{ zIndex: 2000 }}>
         <i className="bi bi-camera-video-off display-1 text-danger mb-3"></i>
         <h3 className="text-white mb-2">Camera Unavailable</h3>
         <p className="text-secondary mb-4">{error}</p>
@@ -159,101 +159,110 @@ const CameraOverlay: React.FC<CameraOverlayProps> = ({ visualObject, onClose, on
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black overflow-hidden animate-fade-in" role="dialog" aria-label="AR Camera View">
-      
+    <div className="position-fixed top-0 start-0 w-100 h-100 bg-black overflow-hidden" role="dialog" aria-label="AR Camera View" style={{ zIndex: 2000 }}>
+
       {/* 1. Full Screen Camera Feed */}
-      <video 
+      <video
         ref={videoRef}
-        autoPlay 
-        playsInline 
+        autoPlay
+        playsInline
         muted
-        className="absolute inset-0 w-full h-full object-cover"
+        className="position-absolute top-0 start-0 w-100 h-100"
+        style={{ objectFit: 'cover' }}
       />
-      
+
       {/* Hidden Canvas for capture */}
       <canvas ref={canvasRef} className="d-none" />
 
       {/* 2. AR Overlay Layer */}
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-10">
-        <div 
-          style={{ 
-            width: '250px', 
-            height: '250px', 
-            transform: `scale(${scale})`, 
+      <div className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ pointerEvents: 'none', zIndex: 10 }}>
+        <div
+          style={{
+            width: '250px',
+            height: '250px',
+            transform: `scale(${scale})`,
             transition: 'transform 0.1s ease-out'
           }}
-          className="d-flex items-center justify-center"
+          className="d-flex align-items-center justify-content-center"
         >
           {getOverlaySVG(visualObject.id)}
         </div>
-        
+
         {/* Helper Text attached to center */}
-        <div className="absolute top-1/2 mt-40 text-center w-full" style={{ transform: 'translateY(120px)' }}>
-             <span className="badge bg-black/50 backdrop-blur-sm border border-white/10 px-3 py-2 text-white shadow-lg">
-                Align {visualObject.name} here
-             </span>
+        <div className="position-absolute w-100 text-center" style={{ top: '50%', marginTop: '140px' }}>
+          <span className="badge bg-dark bg-opacity-50 border border-light border-opacity-10 px-3 py-2 text-white shadow-lg">
+            Align {visualObject.name} here
+          </span>
         </div>
       </div>
 
       {/* 3. Top Bar (Object Info) */}
-      <div className="absolute top-0 left-0 right-0 p-4 z-20 bg-gradient-to-b from-black/80 to-transparent flex justify-between items-start">
-         <div className="text-white drop-shadow-md">
-            <h5 className="mb-0 fw-bold"><i className="bi bi-eye me-2"></i>PortionVision AR</h5>
-            <small className="opacity-75">Match object to outline</small>
-         </div>
-         <button onClick={onClose} className="btn btn-sm btn-dark rounded-circle bg-black/40 border-0 text-white" style={{ width: '40px', height: '40px'}} aria-label="Close Camera">
-            <i className="bi bi-x-lg"></i>
-         </button>
+      <div className="position-absolute top-0 start-0 w-100 p-3 d-flex justify-content-between align-items-start" style={{ zIndex: 20, background: 'linear-gradient(to bottom, rgba(0,0,0,0.7), transparent)' }}>
+        <div className="text-white drop-shadow-md">
+          <h5 className="mb-0 fw-bold"><i className="bi bi-eye me-2"></i>PortionVision AR</h5>
+          <small className="opacity-75">Match object to outline</small>
+        </div>
+        <button onClick={onClose} className="btn btn-sm btn-dark rounded-circle bg-black bg-opacity-50 border-0 text-white d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }} aria-label="Close Camera">
+          <i className="bi bi-x-lg"></i>
+        </button>
       </div>
 
-      {/* 4. Bottom Controls (Glassmorphism) */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 pb-5 z-20" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)' }}>
-         <div className="container max-w-md mx-auto bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-3 shadow-lg">
-            
-            {/* Slider Row */}
-            <div className="mb-3 px-2">
-               <div className="d-flex justify-content-between text-white text-xs fw-bold mb-2 uppercase tracking-wide small">
-                  <span>Scale: {Math.round(scale * 100)}%</span>
-                  <span className="text-info">{visualObject.dimensions}</span>
-               </div>
-               <input 
-                  type="range" 
-                  min="0.5" 
-                  max="2.0" 
-                  step="0.05" 
-                  value={scale}
-                  onChange={(e) => setScale(parseFloat(e.target.value))}
-                  className="form-range" 
-                  style={{ filter: 'hue-rotate(15deg)' }}
-                  aria-label="Adjust scale of reference object"
-               />
-            </div>
+      {/* 4. Bottom Controls */}
+      <div className="position-absolute bottom-0 start-0 w-100 pb-4 pt-5" style={{ zIndex: 20, background: 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)' }}>
+        <div className="container d-flex flex-column align-items-center">
 
-            {/* Action Buttons */}
-            <div className="d-flex gap-3">
-               <button onClick={onClose} className="btn btn-outline-light flex-grow-1 border-white/30 text-white">
-                  Cancel
-               </button>
-               <button 
-                  onClick={handleCapture}
-                  className="btn btn-primary flex-grow-1 fw-bold d-flex align-items-center justify-content-center gap-2"
-                  style={{ background: 'linear-gradient(135deg, #60a5fa, #c084fc)', border: 'none' }}
-               >
-                  <i className="bi bi-camera-fill"></i> Capture
-               </button>
+          {/* Slider Row */}
+          <div className="w-100 px-4 mb-4" style={{ maxWidth: '400px' }}>
+            <div className="d-flex justify-content-between text-white small fw-bold mb-2">
+              <span>Scale: {Math.round(scale * 100)}%</span>
+              <span className="text-info">{visualObject.dimensions}</span>
             </div>
+            <input
+              type="range"
+              min="0.5"
+              max="2.0"
+              step="0.05"
+              value={scale}
+              onChange={(e) => setScale(parseFloat(e.target.value))}
+              className="form-range"
+              aria-label="Adjust scale of reference object"
+            />
+          </div>
 
-         </div>
+          {/* Capture Button (Large & Centered) */}
+          <div className="d-flex align-items-center gap-4">
+            <button
+              onClick={onClose}
+              className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
+              style={{ width: '50px', height: '50px', border: '1px solid rgba(255,255,255,0.3)' }}
+            >
+              <i className="bi bi-x-lg"></i>
+            </button>
+
+            <button
+              onClick={handleCapture}
+              className="btn btn-light rounded-circle p-1 shadow-lg"
+              style={{ width: '80px', height: '80px' }}
+            >
+              <div className="w-100 h-100 rounded-circle border border-dark border-2 bg-white d-flex align-items-center justify-content-center">
+                <div className="rounded-circle bg-danger" style={{ width: '60px', height: '60px' }}></div>
+              </div>
+            </button>
+
+            <div style={{ width: '50px' }}></div> {/* Spacer for balance */}
+          </div>
+
+        </div>
       </div>
 
-      {/* 5. Success Flash / Toast */}
+      {/* 5. Success Flash */}
       {showSuccess && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center animate-fade-in bg-white/20 backdrop-blur-sm">
-           <div className="bg-white text-dark p-4 rounded-3xl shadow-2xl text-center animate-scale-in">
-              <div className="display-1 text-success mb-2"><i className="bi bi-check-circle-fill"></i></div>
-              <h2 className="fw-bold">Captured!</h2>
-              <p className="text-secondary mb-0">Processing...</p>
-           </div>
+        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white bg-opacity-25" style={{ zIndex: 3000, backdropFilter: 'blur(5px)' }}>
+          <div className="bg-white text-dark p-4 rounded-4 shadow-lg text-center">
+            <div className="display-1 text-success mb-2"><i className="bi bi-check-circle-fill"></i></div>
+            <h2 className="fw-bold">Captured!</h2>
+            <p className="text-secondary mb-0">Processing...</p>
+          </div>
         </div>
       )}
 

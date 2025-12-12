@@ -378,7 +378,7 @@ const AboutTab = () => (
     <div className="row g-4 text-start mb-5">
       <div className="col-12 glass-panel p-4 rounded-3 border border-white/10 bg-white/5">
         <h5 className="fw-bold text-primary"><i className="bi bi-1-circle-fill me-2"></i>Select Food</h5>
-        <p className="text-white-50 mb-0">Browse 110+ South Asian foods to find what you're eating.</p>
+        <p className="text-white-50 mb-0">Browse 400+ South Asian foods to find what you're eating.</p>
       </div>
       <div className="col-12 glass-panel p-4 rounded-3 border border-white/10 bg-white/5">
         <h5 className="fw-bold text-success"><i className="bi bi-2-circle-fill me-2"></i>View Portion Size</h5>
@@ -618,7 +618,7 @@ const App: React.FC = () => {
 
       {/* Camera Overlay - Lazy Loaded */}
       <Suspense fallback={
-        <div className="fixed inset-0 z-50 flex flex-column items-center justify-center bg-black">
+        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-black" style={{ zIndex: 2000 }}>
           <div className="loading-spinner mb-3"></div>
           <p className="text-white-50">Initializing AR...</p>
         </div>
