@@ -544,7 +544,7 @@ const App: React.FC = () => {
       <header className="mb-4 d-flex justify-content-between align-items-center">
         <div>
           <h1 className="h3 gradient-text mb-0">PortionVision</h1>
-          {activeTab === 'browse' && <p className="text-secondary small mb-0">110+ South Asian Foods</p>}
+          {activeTab === 'browse' && <p className="text-secondary small mb-0">400+ South Asian Foods</p>}
           {activeTab === 'log' && <p className="text-secondary small mb-0">Your daily tracker</p>}
           {activeTab === 'about' && <p className="text-secondary small mb-0">Help & Tips</p>}
         </div>
