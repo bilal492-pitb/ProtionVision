@@ -1,0 +1,7 @@
+{
+  "name": "PortionVision",
+  "description": "A modern portion size visualizer with AR camera overlay to help users estimate food quantities using familiar reference objects.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
